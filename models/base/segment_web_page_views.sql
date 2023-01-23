@@ -1,15 +1,14 @@
-with source as (
+with base as (
+   select * from {{ var('segment_page_views_table') }}
+  ),
 
-    select * from {{var('segment_page_views_table')}}
-
-),
 
 row_numbering as (
 
     select
         *,
         row_number() over (partition by id order by received_at asc) as row_num
-    from source
+    from base
 
 ),
 
@@ -25,10 +24,13 @@ deduped as (
 url_path as (
     
     select 
-        * 
-        regexp_substr(context_url, '^[^/]+') as url,
-        regexp_replace(context_url, '^[^/]+', '') as path
-        
+        *,
+        regexp_substr(context_page_url, '^[^/]+') as url,
+        regexp_replace(context_page_url, '^[^/]+', '') as path,
+        context_page_title as title,
+        regexp_replace(context_page_url, '^[^?]+', '') as search,
+        'www.infogrid.io'::character as referrer -- this is the page that the page visit was sourced from. needs to be found somewhere. Data in this column is currently a lie
+
     from deduped
     
     ),
@@ -58,11 +60,11 @@ renamed as (
             ''
         ) as referrer_host,
 
-        context_campaign_source as utm_source,
-        context_campaign_medium as utm_medium,
-        context_campaign_name as utm_campaign,
-        context_campaign_term as utm_term,
-        context_campaign_content as utm_content,
+       -- context_campaign_source as utm_source,
+       -- context_campaign_medium as utm_medium,
+       -- context_campaign_name as utm_campaign,
+       -- context_campaign_term as utm_term,
+       -- context_campaign_content as utm_content,
         {{ dbt_utils.get_url_parameter('url', 'gclid') }} as gclid,
         context_ip as ip,
         context_user_agent as user_agent,
