@@ -34,8 +34,8 @@ renamed as (
         sent_at as sent_at_tstamp,
         timestamp as tstamp,
 
-        url as page_url,
-        {{ dbt_utils.get_url_host('url') }} as page_url_host,
+        context_page_url as page_url,
+        {{ dbt_utils.get_url_host('context_page_url') }} as page_url_host,
         path as page_url_path,
         title as page_title,
         search as page_url_query,
@@ -52,7 +52,7 @@ renamed as (
         context_campaign_name as utm_campaign,
         context_campaign_term as utm_term,
         context_campaign_content as utm_content,
-        {{ dbt_utils.get_url_parameter('url', 'gclid') }} as gclid,
+        {{ dbt_utils.get_url_parameter('context_page_url', 'gclid') }} as gclid,
         context_ip as ip,
         context_user_agent as user_agent,
         case
