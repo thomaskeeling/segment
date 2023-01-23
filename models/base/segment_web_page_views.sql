@@ -27,7 +27,7 @@ url_path as (
     select 
         * 
         regexp_substr(context_url, '^[^/]+') as url,
-        regexp_replace(url, '^[^/]+', '') as path
+        regexp_replace(context_url, '^[^/]+', '') as path
         
     from deduped
     
