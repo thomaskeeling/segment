@@ -1,3 +1,4 @@
+
 with base as (
    select * from {{ var('segment_page_views_table') }}
   ),
@@ -65,6 +66,13 @@ renamed as (
        -- context_campaign_name as utm_campaign,
        -- context_campaign_term as utm_term,
        -- context_campaign_content as utm_content,
+
+       'context_campaign_source' as utm_source,
+       'context_campaign_medium' as utm_medium,
+       'context_campaign_name' as utm_campaign,
+       'context_campaign_term' as utm_term,
+       'context_campaign_content' as utm_content, -- subbed. Columns missing.
+
         {{ dbt_utils.get_url_parameter('url', 'gclid') }} as gclid,
         context_ip as ip,
         context_user_agent as user_agent,
