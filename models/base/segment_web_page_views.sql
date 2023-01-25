@@ -30,7 +30,7 @@ url_path as (
         regexp_replace(context_page_url, '^[^/]+', '') as path,
         context_page_title as title,
         regexp_replace(context_page_url, '^[^?]+', '') as search,
-        'www.infogrid.io'::character as referrer -- this is the page that the page visit was sourced from. needs to be found somewhere. Data in this column is currently a lie
+        'www.NA.co.uk'::character as referrer -- this is the page that the page visit was sourced from. needs to be found somewhere. Data in this column is currently a lie
 
     from deduped
     
@@ -67,11 +67,11 @@ renamed as (
        -- context_campaign_term as utm_term,
        -- context_campaign_content as utm_content,
 
-       'context_campaign_source' as utm_source,
-       'context_campaign_medium' as utm_medium,
-       'context_campaign_name' as utm_campaign,
-       'context_campaign_term' as utm_term,
-       'context_campaign_content' as utm_content, -- subbed. Columns missing.
+       'NA' as utm_source,
+       'NA' as utm_medium,
+       'NA' as utm_campaign,
+       'NA' as utm_term,
+       'NA' as utm_content, -- subbed. Columns missing.
 
         {{ dbt_utils.get_url_parameter('url', 'gclid') }} as gclid,
         context_ip as ip,
